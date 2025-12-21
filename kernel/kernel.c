@@ -37,6 +37,15 @@ void menu(void){
     _vgawrite(">\n",WOB);
     // this is gonna be hard to rewrite 
 }
+void animation_test(void){
+    _clean();
+    _vgawrite("INSERT DISK A",WOB);
+    _timesleep(50);
+    _clean();
+    _timesleep(50);
+    _vgawrite("INSERT DISK A",WOB);
+    _timesleep(50);
+}
 void _enableinit(){
     _initidt();
     _picremap();
@@ -49,8 +58,9 @@ void _continueinit(){
 void _kentry(void) {
     _enableinit();
     _continueinit();
-    _sleepms(1000);
-    menu();
+    for (;;){
+        animation_test();
+    }
     for (;;){
         __asm__ volatile ("hlt");
     }
