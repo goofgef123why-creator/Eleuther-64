@@ -1,0 +1,8 @@
+A 64 bit os im working on.
+64 bit long mode.
+Tools:
+    QEMU
+    GRUB
+    x86_64-elf-gcc
+    NASM
+Basic timing done. 
