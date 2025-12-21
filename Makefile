@@ -6,7 +6,7 @@ MODE ?= vga
 
 CFLAGS_COMMON = -ffreestanding -m64 -mcmodel=kernel \
                 -fno-stack-protector -fno-pic -fno-pie \
-                -mno-red-zone -Ikernel
+                -mno-red-zone -Ikernel/include
 LDFLAGS = -ffreestanding -m64 -nostdlib -T linker.ld
 ifeq ($(MODE),serial)
 CFLAGS = $(CFLAGS_COMMON) -DSERIAL
@@ -24,17 +24,22 @@ ISO_DIR = iso
 
 C_SRCS = \
 	kernel/kernel.c \
-	kernel/serial/serial.c \
-	kernel/crash/crash.c \
-	kernel/itoa/itoa.c \
-	kernel/pic/pic.c \
-	kernel/idt/idt.c \
-	kernel/timer/timer.c \
-	kernel/vga/vga.c
+	kernel/drivers/serial/serial.c \
+	kernel/core/crash/crash.c \
+	kernel/lib/itoa/itoa.c \
+	kernel/arch/x86/pic/pic.c \
+	kernel/arch/x86/idt/idt.c \
+	kernel/core/timer/timer.c \
+	kernel/drivers/keyboard/keyboard.c \
+	kernel/lib/str/str.c \
+	kernel/drivers/keyboard/command.c \
+	kernel/misc/terminal/animation.c \
+	kernel/misc/terminal/menu.c \
+	kernel/drivers/vga/vga.c
 
 ASM_SRCS = \
 	boot.asm \
-	kernel/idt/interrupt.asm 
+	kernel/arch/x86/idt/interrupt.asm 
 
 OBJS = $(C_SRCS:.c=.o) $(ASM_SRCS:.asm=.o)
 
