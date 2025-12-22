@@ -63,36 +63,11 @@ void VGAWRITE_P(const char* buf, uint8_t color) {
         PUTCHAR_P(buf[i]);
     }
 }
-const char* CODECONVER(uint64_t code){
-    switch (code)
-    {
-    case 0x2F1:
-        return "Test Error: Testing errors, no likely faults.";
-        break;
-    case 0x2F2:
-        return "Unknow Error: We are unsure of the problem.";
-        break;
-    case 0x2F3:
-        return "Memory: We have ran out of memory";
-        break;
-    case 0x2F4:
-        return "Memory: Not enough memory to fully boot.";
-        break;
-    case 0x2F5:
-        return "Memory: RAM not found.";
-        break;
-    default:
-        break;
-    }
-}
-void _panic(const uint64_t error_codes[], uint16_t count){
+void _panic(const char* error_codes){
     CLEAR_P();
     VGAWRITE_P("Oops!\n",0x4F);
     VGAWRITE_P("We must of have jammed into an Error, please standby.\n\n",0x4F);
     VGAWRITE_P("ERROR: \n", 0x4F);
-    for (int x = 0; x < count; x++){
-        VGAWRITE_P(CODECONVER(error_codes[x]), 0x4F);
-        VGAWRITE_P("\n",0x4F);
-    }
+    VGAWRITE_P(error_codes, 0x4F);
     _crash();
 }

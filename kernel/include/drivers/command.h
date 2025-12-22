@@ -6,4 +6,6 @@ void cmd_clean(void);
 void cmd_menu(void);
 void cmd_run(const char *input);
 void cmd_anim(void);
+void cmd_test(void);
+void cmd_panic(void);
 #endif

@@ -8,6 +8,8 @@ __attribute__((section(".text.kentry")))
 #include "arch/pic.h"
 #include "misc/menu.h"
 #include "drivers/keyboard.h"
+#include "core/scheduler.h"
+#include "lib/itoa.h"
 #define WOB 0x0F
 #define GOB 0x08
 #define LGOB 0x07
@@ -38,6 +40,7 @@ void _continueinit(){
 void _kentry(void) {
     _enableinit();
     _continueinit();
+    _timesleep(100);
     menu(1);
     shell_loop();
     for (;;){

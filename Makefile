@@ -35,10 +35,12 @@ C_SRCS = \
 	kernel/drivers/keyboard/command.c \
 	kernel/misc/terminal/animation.c \
 	kernel/misc/terminal/menu.c \
+	kernel/core/scheduler/scheduler.c \
 	kernel/drivers/vga/vga.c
 
 ASM_SRCS = \
 	boot.asm \
+	kernel/core/scheduler/switch.asm \
 	kernel/arch/x86/idt/interrupt.asm 
 
 OBJS = $(C_SRCS:.c=.o) $(ASM_SRCS:.asm=.o)

@@ -3,6 +3,7 @@
 #include "core/crash.h"
 #include "lib/itoa.h"
 #include "drivers/keyboard.h"
+#include "core/scheduler.h"
 #include <stdint.h>
 static idt_entry_t idt[256];
 static idt_ptr_t idt_ptr;
@@ -81,6 +82,7 @@ extern volatile uint64_t timer_ticks;
 void _irqhandler(regs_t *r) {
     if (r->int_no == 32) {
         timer_ticks++;
+        _schedulertick();
     }
     if (r->int_no == 33){
         _keyboardhandler();
