@@ -65,17 +65,20 @@ static void idt_set_gate(uint8_t n, uint64_t handler) {
     idt[n].zero        = 0;
 }
 void _isrhandler(regs_t *r){
-    if (r->int_no == 14) {
+    static char buf[19];
+    if (r->int_no == 14){
         uint64_t cr2;
-        __asm__ volatile ("mov %%cr2, %0" : "=r"(cr2));
-        _serialwrite("PAGE FAULT\n");
-        _serialwrite("ADDR: ");
-        _serialwrite("\nERR: ");
+        asm volatile ("mov %%cr2, %0" : "=r"(cr2));
+        _serialwrite("PAGE FAULT @ ");
+        itoa(cr2, buf, 16);
+        _serialwrite(buf);
         _serialwrite("\n");
-    }else {
-        _serialwrite("CPU EXCEPTION: ");
-        _serialwrite("\n");
+        _crash();
     }
+    _serialwrite("CPU EXCEPTION ");
+    itoa(r->int_no, buf, 10);
+    _serialwrite(buf);
+    _serialwrite("\n");
     _crash();
 }
 extern volatile uint64_t timer_ticks;

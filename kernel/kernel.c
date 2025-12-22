@@ -18,15 +18,6 @@ list of integers/hexs for errors codes
 and we map them to strings.
 */
 #define ARRAY_LEN(x) (sizeof(x) / sizeof((x)[0]))
-void animation_test(void){
-    _clean();
-    _svgawrite("INSERT DISK A",WOB);
-    _timesleep(50);
-    _clean();
-    _timesleep(50);
-    _svgawrite("INSERT DISK A",WOB);
-    _timesleep(50);
-}
 void _enableinit(){
     _initidt();
     _picremap();

@@ -32,6 +32,9 @@ void _inittask(task_t *t, void *stack, unsigned int size) {
 void yield(void) {
     asm volatile ("int $32"); 
 }
+void _killcurrent(void){
+    current->state = TASK_SLEEPING;
+}
 void _schedule(void) {
     if (!current){
         _panic("Scheduler: current is NULL");
@@ -56,9 +59,9 @@ void _schedule(void) {
     _switchto(&prev->ctx, &next->ctx);
 }
 void _schedulerstart(void) {
-    if (!current)
+    if (!current){
         _panic("schedulerstart: no current task");
-
+    }
     asm volatile (
         "mov %0, %%rsp\n"
         "jmp *%1\n"

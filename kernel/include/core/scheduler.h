@@ -25,4 +25,5 @@ void _schedulertick(void);
 void _schedule(void);
 void _schedulerinit(task_t *first);
 void yield(void);
+void _killcurrent(void);
 void _schedulerstart(void);
