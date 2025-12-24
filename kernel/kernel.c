@@ -30,10 +30,12 @@ void _continueinit(){
 }
 void _kentry(void) {
     _enableinit();
+    _clean();
+    _svgawrite("EARLYINIT.. OK\n",WOB);
     _continueinit();
+    _svgawrite("LATEINIT.. OK\n",WOB);
     _timesleep(100);
     menu(1);
-    shell_loop();
     for (;;){
         __asm__ volatile ("hlt");
     }

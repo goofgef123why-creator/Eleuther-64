@@ -9,6 +9,7 @@
 static char kbd_buf[kbd_size];
 static volatile int kbd_head = 0;
 static volatile int kbd_tail = 0;
+volatile int last_key = -1;
 static int kbd_has_char(void) {
     return kbd_head != kbd_tail;
 } //i vote for tails
@@ -27,7 +28,7 @@ static char kbd_pop(void) {
     kbd_tail = (kbd_tail + 1) % kbd_size;
     return c;
 }
-char kbd_getchar(void) {
+char _kbdgetchar(void) {
     while (!kbd_has_char()) {
         __asm__ volatile ("hlt");
     }
@@ -73,7 +74,7 @@ static char full_word[256];
 static int fw_len = 0;
 static int shift = 0;
 void _keyboardhandler(void) {
-    uint8_t sc = inb(0x60);
+    uint8_t sc = _inb(0x60);
     if (sc == 0x2A || sc == 0x36) { 
         shift = 1; 
         return; 
@@ -89,16 +90,23 @@ void _keyboardhandler(void) {
     if (!c){
         return;
     } 
+    last_key = c;
     kbd_push(c);
 }
-void shell_loop(void) {
+int _keyboardget(void){
+    int key;
+    if (last_key == -1){
+        return -1;
+    }
+    key = last_key;
+    last_key = -1;
+    return key;
+}
+void _shellloop(void) {
     char line[256];
     int len = 0;
-
-    _svgawrite(">", 0x0F);
-
     for (;;) {
-        char c = kbd_getchar();
+        char c = _kbdgetchar();
 
         if (c == '\b') {
             if (len > 0) {

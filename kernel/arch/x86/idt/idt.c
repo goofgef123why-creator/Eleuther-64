@@ -91,9 +91,9 @@ void _irqhandler(regs_t *r) {
         _keyboardhandler();
     }
     if (r->int_no >= 40){
-        outb(0xA0, 0x20);
+        _outb(0xA0, 0x20);
     }
-    outb(0x20, 0x20);
+    _outb(0x20, 0x20);
 }
 void _initidt(void) {
     idt_ptr.limit = sizeof(idt) - 1;

@@ -19,18 +19,18 @@ void _schedulertick(void) {
     current->ticks = TIME_SLICE;
     _schedule();
 }
-void taskentry(void) {
+void _taskentry(void) {
     for (;;);
 }
 void _inittask(task_t *t, void *stack, unsigned int size) {
     uint64_t sp = ((uint64_t)stack + size) & ~0xF;
     t->ctx.rsp = sp;
-    t->ctx.rip = (uint64_t)taskentry;
+    t->ctx.rip = (uint64_t)_taskentry;
     t->ticks = TIME_SLICE;
     t->state = TASK_RUNNING;
 }
-void yield(void) {
-    asm volatile ("int $32"); 
+void _yield(void) {
+    asm volatile ("int $0x20"); 
 }
 void _killcurrent(void){
     current->state = TASK_SLEEPING;

@@ -8,22 +8,22 @@
 #define ICW1_ICW4 0x01
 #define ICW4_8086 0x01
 void _picremap(void) {
-    uint8_t a1 = inb(PIC1_DATA);
-    uint8_t a2 = inb(PIC2_DATA);
-    outb(PIC1_COMMAND, ICW1_INIT | ICW1_ICW4);
-    outb(PIC2_COMMAND, ICW1_INIT | ICW1_ICW4);
-    outb(PIC1_DATA, 0x20);
-    outb(PIC2_DATA, 0x28);
-    outb(PIC1_DATA, 4);
-    outb(PIC2_DATA, 2);
-    outb(PIC1_DATA, ICW4_8086);
-    outb(PIC2_DATA, ICW4_8086);
-    outb(PIC1_DATA, a1);
-    outb(PIC2_DATA, a2);
+    uint8_t a1 = _inb(PIC1_DATA);
+    uint8_t a2 = _inb(PIC2_DATA);
+    _outb(PIC1_COMMAND, ICW1_INIT | ICW1_ICW4);
+    _outb(PIC2_COMMAND, ICW1_INIT | ICW1_ICW4);
+    _outb(PIC1_DATA, 0x20);
+    _outb(PIC2_DATA, 0x28);
+    _outb(PIC1_DATA, 4);
+    _outb(PIC2_DATA, 2);
+    _outb(PIC1_DATA, ICW4_8086);
+    _outb(PIC2_DATA, ICW4_8086);
+    _outb(PIC1_DATA, a1);
+    _outb(PIC2_DATA, a2);
 }
 void _picenableirq(uint8_t irq) {
     uint16_t port = (irq < 8) ? PIC1_DATA : PIC2_DATA;
-    uint8_t value = inb(port);
+    uint8_t value = _inb(port);
     value &= ~(1 << (irq % 8));
-    outb(port, value);
+    _outb(port, value);
 }

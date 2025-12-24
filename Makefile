@@ -36,6 +36,9 @@ C_SRCS = \
 	kernel/misc/terminal/animation.c \
 	kernel/misc/terminal/menu.c \
 	kernel/core/scheduler/scheduler.c \
+	kernel/demo/snake.c \
+	kernel/demo/engine.c \
+	kernel/demo/pong.c \
 	kernel/drivers/vga/vga.c
 
 ASM_SRCS = \

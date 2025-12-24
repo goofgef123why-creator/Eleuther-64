@@ -8,15 +8,15 @@ static int col = 0;
 static uint8_t current_color = 0x0F;
 static volatile uint16_t* const vga = (volatile uint16_t*)0xB8000;
 static uint8_t flags[WIDTH * HEIGHT];
-static inline uint16_t VGACELL(char c, uint8_t color) {
+uint16_t VGACELL(char c, uint8_t color) {
     return (uint16_t)c | ((uint16_t)color << 8);
 }
 static inline void _vgaupdatecursor(void) {
     uint16_t pos = row * WIDTH + col;
-    outb(0x3D4, 0x0F);
-    outb(0x3D5, (uint8_t)(pos & 0xFF));
-    outb(0x3D4, 0x0E);
-    outb(0x3D5, (uint8_t)((pos >> 8) & 0xFF));
+    _outb(0x3D4, 0x0F);
+    _outb(0x3D5, (uint8_t)(pos & 0xFF));
+    _outb(0x3D4, 0x0E);
+    _outb(0x3D5, (uint8_t)((pos >> 8) & 0xFF));
 }
 void _vgabackspace(void) {
     if (row == 0 && col == 0) {
@@ -83,6 +83,14 @@ static void _vgachar(char c) {
         }
     }
     _vgaupdatecursor();
+}
+void _avgachar(int x, int y,char c, uint8_t color){
+    if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT){
+        return;
+    }
+    int idx = y * WIDTH + x;
+    vga[idx] = VGACELL(c,color);
+    flags[idx] = 0;
 }
 static void _svgachar(char c) {
     if (c == '\n') {

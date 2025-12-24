@@ -7,9 +7,9 @@
 volatile uint64_t timer_ticks = 0;
 void _inittimer(uint32_t hz) {
     uint32_t divisor = PIT_FREQ / hz;
-    outb(PIT_CMD, 0x36);
-    outb(PIT_CH0, divisor & 0xFF);
-    outb(PIT_CH0, (divisor >> 8) & 0xFF);
+    _outb(PIT_CMD, 0x36);
+    _outb(PIT_CH0, divisor & 0xFF);
+    _outb(PIT_CH0, (divisor >> 8) & 0xFF);
 }
 void _timesleep(uint64_t ticks) {
     uint64_t target = timer_ticks + ticks;
